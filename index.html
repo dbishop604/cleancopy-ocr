@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CleanCopy OCR — Continuous Text from PDFs & Images</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>CleanCopy OCR</h1>
+      <p>Upload a PDF or image. We’ll OCR it and output a continuous, editable document (Word or TXT) with fewer broken lines.</p>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for m in messages %}<div>{{ m }}</div>{% endfor %}
+        </div>
+      {% endif %}
+      {% endwith %}
+
+      <form action="/convert" method="POST" enctype="multipart/form-data" class="card">
+        <label for="file">PDF or Image:</label>
+        <input type="file" id="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.tiff,.tif,.bmp" required>
+
+        <label for="format">Output format:</label>
+        <select id="format" name="format">
+          <option value="docx" selected>Word (.docx)</option>
+          <option value="txt">Plain text (.txt)</option>
+        </select>
+
+        <label for="join_strategy">Join strategy:</label>
+        <select id="join_strategy" name="join_strategy">
+          <option value="smart" selected>Smart (recommended)</option>
+          <option value="aggressive">Aggressive (strip most line-breaks)</option>
+          <option value="none">No joining (raw OCR)</option>
+        </select>
+
+        <button type="submit">Convert</button>
+      </form>
+
+      <footer>
+        <small>© Debbie Bishop. All rights reserved. Do not scrape, index, or redistribute.</small>
+      </footer>
+    </div>
+  </body>
+</html>
